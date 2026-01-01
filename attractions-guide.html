@@ -238,7 +238,54 @@
       <a class="btn" href="external.html?url=https://www.ghibli-museum.jp/en/ticket-information/">Tickets</a>
     </div>
   </div>
-
 </div>
+
+<!-- ======================================================
+     Offline safety-net for external links
+     - Intercepts clicks on links that go to external.html?url=...
+     - If offline: show message and stop navigation
+     - If online: allow the normal navigation to external.html
+     ====================================================== -->
+<script>
+(function () {
+  function isExternalGatewayLink(a) {
+    return a && a.getAttribute && (a.getAttribute("href") || "").startsWith("external.html?url=");
+  }
+
+  function getTargetUrlFromHref(href) {
+    try {
+      const u = new URL(href, location.href);
+      return u.searchParams.get("url") || "";
+    } catch {
+      return "";
+    }
+  }
+
+  function showOfflineMessage() {
+    alert("You are currently offline.\n\nExternal websites are unavailable without a data connection.");
+  }
+
+  document.addEventListener("click", function (e) {
+    const a = e.target && e.target.closest ? e.target.closest("a") : null;
+    if (!isExternalGatewayLink(a)) return;
+
+    // If offline, prevent navigation entirely (avoid browser error page)
+    if (!navigator.onLine) {
+      e.preventDefault();
+      showOfflineMessage();
+      return;
+    }
+
+    // If online, ensure we route through external.html with a clean encoded url
+    // (This keeps behaviour consistent and avoids malformed params)
+    const targetUrl = getTargetUrlFromHref(a.getAttribute("href"));
+    if (targetUrl) {
+      e.preventDefault();
+      location.href = "external.html?url=" + encodeURIComponent(targetUrl);
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
