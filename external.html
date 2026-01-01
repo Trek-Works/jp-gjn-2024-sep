@@ -23,14 +23,8 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       text-align: center;
     }
-    h1 {
-      font-size: 1.3rem;
-      margin-bottom: 12px;
-    }
-    p {
-      opacity: 0.85;
-      line-height: 1.5;
-    }
+    h1 { font-size: 1.3rem; margin-bottom: 12px; }
+    p { opacity: 0.85; line-height: 1.5; }
     .actions {
       margin-top: 20px;
       display: flex;
@@ -49,7 +43,6 @@
     a.secondary {
       background: rgba(255,255,255,0.1);
     }
-
     .offline-icon {
       font-size: 48px;
       margin-bottom: 12px;
@@ -71,9 +64,7 @@
     <a class="button secondary" href="./index.html">
       Back to Trip Home
     </a>
-
-    <a class="button secondary"
-       href="./attractions-guide.html">
+    <a class="button secondary" href="./attractions-guide.html">
       Go Back
     </a>
   </div>
@@ -83,6 +74,9 @@
   const params = new URLSearchParams(location.search);
   const target = params.get("url");
 
+  // =====================================================
+  // Trip Mode — canonical 2024 model (trip-scoped)
+  // =====================================================
   const TRIP_ID = "GJN-2024-Sep";
   const TRIP_MODE_KEY = "tripMode:GJN-2024-Sep";
   const TRIP_MODE_LS_KEY = "trekworks.tripMode:GJN-2024-Sep";
@@ -127,35 +121,14 @@
     card.innerHTML = `
       <div class="offline-icon">📴</div>
       <h1>You’re offline</h1>
-
-      <p>
-        This Japan trip app is available offline, but some sections need an
-        internet connection to load.
-      </p>
-
-      <p>
-        Reconnect when you can and the app will refresh automatically.
-      </p>
-
-      <p>
-        If you were trying to open an external website and lost connection,
-        go back to Trip Home and switch Trip Mode to Offline to continue using the app.
-      </p>
-
+      <p>This Japan trip app is available offline, but some sections need an internet connection to load.</p>
+      <p>Reconnect when you can and the app will refresh automatically.</p>
+      <p>If you were trying to open an external website and lost connection, go back to Trip Home and switch Trip Mode to Offline to continue using the app.</p>
       <div class="actions">
-        <a class="button secondary" href="./index.html">
-          Back to Trip Home
-        </a>
-
-        <a class="button secondary"
-           href="./attractions-guide.html">
-          Go Back
-        </a>
+        <a class="button secondary" href="./index.html">Back to Trip Home</a>
+        <a class="button secondary" href="./attractions-guide.html">Go Back</a>
       </div>
-
-      <div class="offline-footer">
-        JP · GJN-2024-Sep · Japan
-      </div>
+      <div class="offline-footer">JP · GJN-2024-Sep · Japan</div>
     `;
   }
 
@@ -185,20 +158,13 @@
     }
 
     const tripMode = await getTripMode();
-
     if (tripMode !== "online") {
-      document.getElementById("title").textContent = "External link unavailable";
       document.getElementById("message").textContent =
         "You are currently in Offline Trip Mode. External websites are unavailable.";
       return;
     }
 
-    try {
-      await fetch(target, { mode: "no-cors", cache: "no-store" });
-      location.replace(target);
-    } catch {
-      renderOfflineScreen();
-    }
+    location.replace(target);
   })();
 </script>
 
