@@ -36,18 +36,15 @@
       text-decoration: none;
       padding: 10px 16px;
       border-radius: 10px;
-      background: #2563eb;
+      background: rgba(255,255,255,0.1);
       color: #fff;
       font-weight: 500;
-    }
-    a.secondary {
-      background: rgba(255,255,255,0.1);
     }
     .offline-icon {
       font-size: 48px;
       margin-bottom: 12px;
     }
-    .offline-footer {
+    .footer {
       margin-top: 18px;
       font-size: 0.9rem;
       opacity: 0.6;
@@ -57,115 +54,130 @@
 <body>
 
 <div class="card" id="card">
-  <h1 id="title">External link unavailable</h1>
-  <p id="message">Checking connection…</p>
-
-  <div class="actions">
-    <a class="button secondary" href="./index.html">
-      Back to Trip Home
-    </a>
-    <a class="button secondary" href="./attractions-guide.html">
-      Go Back
-    </a>
-  </div>
+  <h1>Checking connection…</h1>
+  <p>Please wait</p>
 </div>
 
 <script>
-  const params = new URLSearchParams(location.search);
-  const target = params.get("url");
+/* ======================================================
+   Trip Mode — canonical JP · GJN-2024-Sep
+   ====================================================== */
 
-  // =====================================================
-  // Trip Mode — canonical 2024 model (trip-scoped)
-  // =====================================================
-  const TRIP_ID = "GJN-2024-Sep";
-  const TRIP_MODE_KEY = "tripMode:GJN-2024-Sep";
-  const TRIP_MODE_LS_KEY = "trekworks.tripMode:GJN-2024-Sep";
+const TRIP_MODE_KEY = "tripMode:GJN-2024-Sep";
+const TRIP_MODE_LS_KEY = "trekworks.tripMode:GJN-2024-Sep";
 
-  function getTripMode() {
-    return new Promise((resolve) => {
-      const req = indexedDB.open("trekworks", 1);
+function getTripMode() {
+  return new Promise((resolve) => {
+    const req = indexedDB.open("trekworks", 1);
 
-      req.onerror = () => resolve("offline");
+    req.onerror = () => resolve("offline");
 
-      req.onupgradeneeded = () => {
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains("settings")) {
+        db.createObjectStore("settings");
+      }
+    };
+
+    req.onsuccess = () => {
+      try {
         const db = req.result;
-        if (!db.objectStoreNames.contains("settings")) {
-          db.createObjectStore("settings");
-        }
-      };
+        const tx = db.transaction("settings", "readonly");
+        const store = tx.objectStore("settings");
+        const r = store.get(TRIP_MODE_KEY);
 
-      req.onsuccess = () => {
-        try {
-          const db = req.result;
-          const tx = db.transaction("settings", "readonly");
-          const store = tx.objectStore("settings");
-          const r = store.get(TRIP_MODE_KEY);
+        r.onsuccess = () => {
+          if (r.result === undefined && localStorage.getItem(TRIP_MODE_LS_KEY)) {
+            store.put(localStorage.getItem(TRIP_MODE_LS_KEY), TRIP_MODE_KEY);
+          }
+          resolve(r.result || "offline");
+        };
 
-          r.onsuccess = () => {
-            if (r.result === undefined && localStorage.getItem(TRIP_MODE_LS_KEY)) {
-              store.put(localStorage.getItem(TRIP_MODE_LS_KEY), TRIP_MODE_KEY);
-            }
-            resolve(r.result || "offline");
-          };
+        r.onerror = () => resolve("offline");
+      } catch {
+        resolve("offline");
+      }
+    };
+  });
+}
 
-          r.onerror = () => resolve("offline");
-        } catch {
-          resolve("offline");
-        }
-      };
+/* ======================================================
+   Connectivity check
+   ====================================================== */
+
+async function hasConnection() {
+  if (!navigator.onLine) return false;
+  try {
+    await fetch("https://www.google.com/generate_204", {
+      method: "GET",
+      mode: "no-cors",
+      cache: "no-store"
     });
+    return true;
+  } catch {
+    return false;
   }
+}
 
-  function renderOfflineScreen() {
-    const card = document.getElementById("card");
-    card.innerHTML = `
-      <div class="offline-icon">📴</div>
-      <h1>You’re offline</h1>
-      <p>This Japan trip app is available offline, but some sections need an internet connection to load.</p>
-      <p>Reconnect when you can and the app will refresh automatically.</p>
-      <p>If you were trying to open an external website and lost connection, go back to Trip Home and switch Trip Mode to Offline to continue using the app.</p>
+/* ======================================================
+   Render helpers
+   ====================================================== */
+
+function renderOffline() {
+  document.getElementById("card").innerHTML = `
+    <div class="offline-icon">📴</div>
+    <h1>You’re offline</h1>
+    <p>External websites are unavailable while offline.</p>
+    <div class="actions">
+      <a class="button" href="./index.html">Back to Trip Home</a>
+    </div>
+    <div class="footer">JP · GJN-2024-Sep · Japan</div>
+  `;
+}
+
+function renderBlocked() {
+  document.getElementById("card").innerHTML = `
+    <h1>External access blocked</h1>
+    <p>You are currently in Offline Trip Mode.</p>
+    <div class="actions">
+      <a class="button" href="./index.html">Back to Trip Home</a>
+    </div>
+    <div class="footer">JP · GJN-2024-Sep · Japan</div>
+  `;
+}
+
+/* ======================================================
+   Main execution
+   ====================================================== */
+
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const targetUrl = params.get("url");
+
+  if (!targetUrl) {
+    document.getElementById("card").innerHTML = `
+      <h1>Invalid external link</h1>
       <div class="actions">
-        <a class="button secondary" href="./index.html">Back to Trip Home</a>
-        <a class="button secondary" href="./attractions-guide.html">Go Back</a>
+        <a class="button" href="./index.html">Back to Trip Home</a>
       </div>
-      <div class="offline-footer">JP · GJN-2024-Sep · Japan</div>
     `;
+    return;
   }
 
-  async function hasUsableData() {
-    try {
-      await fetch("https://www.google.com/generate_204", {
-        method: "GET",
-        mode: "no-cors",
-        cache: "no-store"
-      });
-      return true;
-    } catch {
-      return false;
-    }
+  const online = await hasConnection();
+  if (!online) {
+    renderOffline();
+    return;
   }
 
-  (async () => {
-    if (!target) {
-      document.getElementById("message").textContent = "Invalid external link.";
-      return;
-    }
+  const tripMode = await getTripMode();
+  if (tripMode !== "online") {
+    renderBlocked();
+    return;
+  }
 
-    const online = await hasUsableData();
-    if (!online) {
-      renderOfflineScreen();
-      return;
-    }
-
-    const tripMode = await getTripMode();
-    if (tripMode !== "online") {
-      document.getElementById("message").textContent =
-        "You are currently in Offline Trip Mode. External websites are unavailable.";
-      return;
-    }
-
-    location.replace(target);
-  })();
+  location.replace(targetUrl);
+})();
 </script>
 
 </body>
