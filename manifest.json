@@ -1,11 +1,11 @@
 {
-  "id": "/",
+  "id": "https://jp-gjn-2024-sep.trekworks.org/"
   "name": "GJN-JP-2024-Sep – Japan Trip",
   "short_name": "JP GJN-2024",
   "description": "Unified trip app for JP GJN-2024 (Japan) with quick access to secure trip sections.",
   "lang": "en-AU",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "https://jp-gjn-2024-sep.trekworks.org/",
+  "scope": "https://jp-gjn-2024-sep.trekworks.org/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#05060b",
