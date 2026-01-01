@@ -173,6 +173,7 @@
       <a class="btn external-link" href="#" data-url="https://www.klook.com/en-AU/activity/151455-hiroshima-castle/">Tickets / Info</a>
     </div>
   </div>
+
   <div class="city-title">🎎 Kyoto</div>
 
   <div class="card">
@@ -238,32 +239,19 @@
     </div>
   </div>
 </div>
-
 <!-- ======================================================
      External link safety-net
-     Prevents DNS navigation when offline
+     Trip element delegates UI and gating to external.html
      ====================================================== -->
 <script>
 (function () {
-
-  function showOfflineMessage() {
-    alert(
-      "You are currently offline.\n\n" +
-      "External websites are unavailable without a data connection."
-    );
-  }
 
   document.querySelectorAll(".external-link").forEach(function (link) {
     link.addEventListener("click", function (e) {
       e.preventDefault();
 
-      const url = this.dataset.url;
+      var url = this.dataset.url;
       if (!url) return;
-
-      if (!navigator.onLine) {
-        showOfflineMessage();
-        return;
-      }
 
       location.href = "external.html?url=" + encodeURIComponent(url);
     });
