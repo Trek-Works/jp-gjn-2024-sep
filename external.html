@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>Leaving TrekWorks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
     body {
       margin: 0;
@@ -15,16 +16,27 @@
       justify-content: center;
       min-height: 100vh;
     }
+
     .card {
-      max-width: 420px;
+      max-width: 440px;
       padding: 28px;
       border-radius: 14px;
       background: rgba(255,255,255,0.05);
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       text-align: center;
     }
-    h1 { font-size: 1.3rem; margin-bottom: 12px; }
-    p { opacity: 0.85; line-height: 1.5; }
+
+    h1 {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+    }
+
+    p {
+      opacity: 0.85;
+      line-height: 1.5;
+      margin: 0 0 8px 0;
+    }
+
     .actions {
       margin-top: 20px;
       display: flex;
@@ -32,18 +44,21 @@
       justify-content: center;
       flex-wrap: wrap;
     }
+
     a.button {
       text-decoration: none;
       padding: 10px 16px;
       border-radius: 10px;
-      background: rgba(255,255,255,0.1);
-      color: #fff;
+      background: rgba(255,255,255,0.12);
+      color: #ffffff;
       font-weight: 500;
     }
+
     .offline-icon {
-      font-size: 48px;
-      margin-bottom: 12px;
+      font-size: 46px;
+      margin-bottom: 10px;
     }
+
     .footer {
       margin-top: 18px;
       font-size: 0.9rem;
@@ -51,6 +66,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <div class="card" id="card">
@@ -60,7 +76,7 @@
 
 <script>
 /* ======================================================
-   Trip Mode — canonical JP · GJN-2024-Sep
+   Trip Mode — JP · GJN-2024-Sep (canonical)
    ====================================================== */
 
 const TRIP_MODE_KEY = "tripMode:GJN-2024-Sep";
@@ -120,16 +136,29 @@ async function hasConnection() {
 }
 
 /* ======================================================
+   Navigation helpers
+   ====================================================== */
+
+function goBackSafely() {
+  if (history.length > 1) {
+    history.back();
+  } else {
+    location.href = "./index.html";
+  }
+}
+
+/* ======================================================
    Render helpers
    ====================================================== */
 
 function renderOffline() {
   document.getElementById("card").innerHTML = `
     <div class="offline-icon">📴</div>
-    <h1>You’re offline</h1>
-    <p>External websites are unavailable while offline.</p>
+    <h1>External link unavailable</h1>
+    <p>You appear to be offline.</p>
     <div class="actions">
       <a class="button" href="./index.html">Back to Trip Home</a>
+      <a class="button" href="#" onclick="goBackSafely(); return false;">Go Back</a>
     </div>
     <div class="footer">JP · GJN-2024-Sep · Japan</div>
   `;
@@ -141,6 +170,19 @@ function renderBlocked() {
     <p>You are currently in Offline Trip Mode.</p>
     <div class="actions">
       <a class="button" href="./index.html">Back to Trip Home</a>
+      <a class="button" href="#" onclick="goBackSafely(); return false;">Go Back</a>
+    </div>
+    <div class="footer">JP · GJN-2024-Sep · Japan</div>
+  `;
+}
+
+function renderInvalid() {
+  document.getElementById("card").innerHTML = `
+    <h1>External link unavailable</h1>
+    <p>Invalid external link.</p>
+    <div class="actions">
+      <a class="button" href="./index.html">Back to Trip Home</a>
+      <a class="button" href="#" onclick="goBackSafely(); return false;">Go Back</a>
     </div>
     <div class="footer">JP · GJN-2024-Sep · Japan</div>
   `;
@@ -155,12 +197,7 @@ function renderBlocked() {
   const targetUrl = params.get("url");
 
   if (!targetUrl) {
-    document.getElementById("card").innerHTML = `
-      <h1>Invalid external link</h1>
-      <div class="actions">
-        <a class="button" href="./index.html">Back to Trip Home</a>
-      </div>
-    `;
+    renderInvalid();
     return;
   }
 
