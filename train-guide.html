@@ -108,6 +108,7 @@
     .offline-box h2 {
         margin: 0 0 10px;
         font-size: 20px;
+        color: #e5e7eb;
     }
 
     .offline-box p {
@@ -238,3 +239,58 @@
 
 <div class="offline-overlay" id="offlineOverlay">
     <div class="offline-box">
+        <h2>You’re offline</h2>
+        <p>
+            This content requires an internet connection.<br>
+            You can continue using other parts of the app while offline.
+        </p>
+        <button onclick="closeOffline()">OK</button>
+    </div>
+</div>
+
+<script>
+function handleExternal(url) {
+    verifyConnectivity()
+        .then(function () {
+            window.location.href =
+                './external.html?url=' + encodeURIComponent(url) + '&back=train-guide.html';
+        })
+        .catch(function () {
+            showOffline();
+        });
+}
+
+function verifyConnectivity() {
+    return new Promise(function (resolve, reject) {
+        const controller = new AbortController();
+        const timeout = setTimeout(function () {
+            controller.abort();
+            reject();
+        }, 800);
+
+        fetch('./external.html', {
+            cache: 'no-store',
+            signal: controller.signal
+        })
+        .then(function () {
+            clearTimeout(timeout);
+            resolve();
+        })
+        .catch(function () {
+            clearTimeout(timeout);
+            reject();
+        });
+    });
+}
+
+function showOffline() {
+    document.getElementById('offlineOverlay').style.display = 'flex';
+}
+
+function closeOffline() {
+    document.getElementById('offlineOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
