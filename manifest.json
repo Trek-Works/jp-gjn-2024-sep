@@ -4,7 +4,7 @@
   "short_name": "JP GJN-2024",
   "description": "Unified trip app for JP GJN-2024 (Japan) with quick access to secure trip sections.",
   "lang": "en-AU",
-  "start_url": "https://jp-gjn-2026-may.trekworks.org/",
+  "start_url": "/app-2024",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
