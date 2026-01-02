@@ -291,8 +291,16 @@
 <script>
 (function () {
 
-  function isOnline() {
-    return navigator.onLine === true;
+  let externalNavigationPermitted = false;
+
+  function resetConnectivityLatch() {
+    externalNavigationPermitted = false;
+  }
+
+  function evaluateConnectivityGate() {
+    if (navigator.onLine !== true) return false;
+    if (document.visibilityState !== "visible") return false;
+    return externalNavigationPermitted === true;
   }
 
   function showOfflineMessage() {
@@ -305,6 +313,24 @@
     if (box) box.style.display = "none";
   }
 
+  window.addEventListener("offline", resetConnectivityLatch);
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState !== "visible") {
+      resetConnectivityLatch();
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const closeBtn = document.getElementById("offline-message-close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", hideOfflineMessage);
+    }
+
+    if (navigator.onLine === true && document.visibilityState === "visible") {
+      externalNavigationPermitted = true;
+    }
+  });
+
   document.addEventListener("click", function (event) {
     const link = event.target.closest(".external-link");
     if (!link) return;
@@ -314,20 +340,13 @@
     const targetUrl = link.getAttribute("data-external-url");
     if (!targetUrl) return;
 
-    if (!isOnline()) {
+    if (!evaluateConnectivityGate()) {
       showOfflineMessage();
       return;
     }
 
     window.location.href =
       "external.html?url=" + encodeURIComponent(targetUrl);
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const closeBtn = document.getElementById("offline-message-close");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", hideOfflineMessage);
-    }
   });
 
 })();
