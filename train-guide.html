@@ -79,8 +79,51 @@
         border-radius: 6px;
         font-size: 13px;
         color: #93c5fd;
-        text-decoration: none;
         border: 1px solid #374151;
+        cursor: pointer;
+    }
+
+    /* ===== OFFLINE OVERLAY ===== */
+    .offline-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(5,6,11,0.88);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .offline-box {
+        max-width: 420px;
+        margin: 20px;
+        padding: 20px 22px;
+        background: #111827;
+        border: 1px solid #374151;
+        border-radius: 14px;
+        text-align: center;
+        box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+    }
+
+    .offline-box h2 {
+        margin: 0 0 10px;
+        font-size: 20px;
+    }
+
+    .offline-box p {
+        margin: 0 0 16px;
+        font-size: 14px;
+        color: #9ca3af;
+    }
+
+    .offline-box button {
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 1px solid #374151;
+        background: #1f2937;
+        color: #93c5fd;
+        font-size: 14px;
+        cursor: pointer;
     }
 </style>
 </head>
@@ -95,7 +138,6 @@
         ← Back to Trip Home
     </a>
 
-    <!-- 31 Aug -->
     <div class="card">
         <div class="fare-badge">¥3,980</div>
         <div class="label">31 Aug 2024 — Kansai Airport → Candeo Hotels Osaka The Tower</div><br>
@@ -105,13 +147,9 @@
         <span class="label">Fare Type:</span> Green Class (2 passengers)<br>
         <span class="label">Line:</span> Kansai Airport Express Nankai-Namba<br>
 
-        <a class="line-btn"
-           href="./external.html?url=https%3A%2F%2Fwww.nankai.co.jp%2F&back=train-guide.html">
-            Line Info
-        </a>
+        <button class="line-btn" onclick="handleExternal('https://www.nankai.co.jp/')">Line Info</button>
     </div>
 
-    <!-- 2 Sep -->
     <div class="card">
         <div class="fare-badge">¥20,440</div>
         <div class="label">2 Sep 2024 — Shin-Osaka → Hiroshima</div><br>
@@ -121,13 +159,9 @@
         <span class="label">Fare Type:</span> Green Class (2 passengers)<br>
         <span class="label">Line:</span> Tokaido Shinkansen<br>
 
-        <a class="line-btn"
-           href="./external.html?url=https%3A%2F%2Fglobal.jr-central.co.jp%2Fen%2F&back=train-guide.html">
-            Line Info
-        </a>
+        <button class="line-btn" onclick="handleExternal('https://global.jr-central.co.jp/en/')">Line Info</button>
     </div>
 
-    <!-- 3 Sep -->
     <div class="card">
         <div class="fare-badge">¥39,560</div>
         <div class="label">3 Sep 2024 — Hiroshima → Shinjuku</div><br>
@@ -137,13 +171,9 @@
         <span class="label">Fare Type:</span> Green Class (2 passengers)<br>
         <span class="label">Line:</span> Nozomi Hakata Shinkansen<br>
 
-        <a class="line-btn"
-           href="./external.html?url=https%3A%2F%2Fglobal.jr-central.co.jp%2Fen%2F&back=train-guide.html">
-            Line Info
-        </a>
+        <button class="line-btn" onclick="handleExternal('https://global.jr-central.co.jp/en/')">Line Info</button>
     </div>
 
-    <!-- 5 Sep -->
     <div class="card">
         <div class="fare-badge">¥17,260</div>
         <div class="label">5 Sep 2024 — Shinjuku → Nagano</div><br>
@@ -153,13 +183,9 @@
         <span class="label">Fare Type:</span> Green Class (2 passengers)<br>
         <span class="label">Line:</span> Hokuriku Shinkansen<br>
 
-        <a class="line-btn"
-           href="./external.html?url=https%3A%2F%2Fwww.jreast.co.jp%2Fe%2F&back=train-guide.html">
-            Line Info
-        </a>
+        <button class="line-btn" onclick="handleExternal('https://www.jreast.co.jp/e/')">Line Info</button>
     </div>
 
-    <!-- 6 Sep -->
     <div class="card">
         <div class="fare-badge">¥17,660</div>
         <div class="label">6 Sep 2024 — Nagano → Shinjuku</div><br>
@@ -169,13 +195,9 @@
         <span class="label">Fare Type:</span> Green Class (2 passengers)<br>
         <span class="label">Line:</span> Hokuriku Shinkansen<br>
 
-        <a class="line-btn"
-           href="./external.html?url=https%3A%2F%2Fwww.jreast.co.jp%2Fe%2F&back=train-guide.html">
-            Line Info
-        </a>
+        <button class="line-btn" onclick="handleExternal('https://www.jreast.co.jp/e/')">Line Info</button>
     </div>
 
-    <!-- 7 Sep -->
     <div class="card">
         <div class="fare-badge">¥28,340</div>
         <div class="label">7 Sep 2024 — Shinjuku → Kyoto</div><br>
@@ -185,13 +207,9 @@
         <span class="label">Fare Type:</span> Green Class (2 passengers)<br>
         <span class="label">Line:</span> Tokaido Shinkansen<br>
 
-        <a class="line-btn"
-           href="./external.html?url=https%3A%2F%2Fglobal.jr-central.co.jp%2Fen%2F&back=train-guide.html">
-            Line Info
-        </a>
+        <button class="line-btn" onclick="handleExternal('https://global.jr-central.co.jp/en/')">Line Info</button>
     </div>
 
-    <!-- 8 Sep -->
     <div class="card">
         <div class="fare-badge">¥1,440</div>
         <div class="label">8 Sep 2024 — Kyoto → Cosmosquare Station</div><br>
@@ -201,13 +219,9 @@
         <span class="label">Fare Type:</span> Green Class (2 passengers)<br>
         <span class="label">Line:</span> Keihan Main Line<br>
 
-        <a class="line-btn"
-           href="./external.html?url=https%3A%2F%2Fwww.keihan.co.jp%2Ftravel%2Fen%2F&back=train-guide.html">
-            Line Info
-        </a>
+        <button class="line-btn" onclick="handleExternal('https://www.keihan.co.jp/travel/en/')">Line Info</button>
     </div>
 
-    <!-- 9 Sep -->
     <div class="card">
         <div class="fare-badge">¥2,520</div>
         <div class="label">9 Sep 2024 — Shin-Osaka → Kansai Airport</div><br>
@@ -217,12 +231,10 @@
         <span class="label">Fare Type:</span> Green Class (2 passengers)<br>
         <span class="label">Line:</span> Nankai Line<br>
 
-        <a class="line-btn"
-           href="./external.html?url=https%3A%2F%2Fwww.nankai.co.jp%2F&back=train-guide.html">
-            Line Info
-        </a>
+        <button class="line-btn" onclick="handleExternal('https://www.nankai.co.jp/')">Line Info</button>
     </div>
 
 </div>
-</body>
-</html>
+
+<div class="offline-overlay" id="offlineOverlay">
+    <div class="offline-box">
