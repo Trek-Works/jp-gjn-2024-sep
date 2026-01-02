@@ -93,6 +93,7 @@
   .btn {
     padding: 6px 12px;
     border-radius: 10px;
+    text-decoration: none;
     background: var(--accent-soft);
     color: var(--accent);
     border: 1px solid var(--border);
@@ -108,7 +109,7 @@
     color: var(--text-muted);
   }
 
-  /* ===== OFFLINE OVERLAY STYLES ===== */
+  /* ===== BEGIN OFFLINE OVERLAY STYLES ===== */
   .offline-overlay {
     position: fixed;
     inset: 0;
@@ -147,6 +148,7 @@
     font-size: 14px;
     cursor: pointer;
   }
+  /* ===== END OFFLINE OVERLAY STYLES ===== */
 </style>
 </head>
 
@@ -170,7 +172,9 @@
     <div class="meta"><span>How to get there:</span>From Hiroshima Station, tram line 2 or 6 to Genbaku-Domu Mae (15 mins, 220 YEN)</div>
     <div class="comment">Admission ends 30 minutes before closing.</div>
     <div class="btn-row">
+      <!-- GATED EXTERNAL LINK -->
       <button class="btn" onclick="handleExternal('https://www.japan-guide.com/e/e3400.html')">Official Site</button>
+      <!-- GATED EXTERNAL LINK (PHASE 2.5 ALIGNMENT) -->
       <button class="btn" onclick="handleExternal('https://www.klook.com/en-AU/activity/106604-hiroshima-peace-memorial-museum-permanent-exhibitions-admission/')">Tickets / Info</button>
     </div>
   </div>
@@ -183,8 +187,8 @@
     <div class="meta"><span>How to get there:</span>Local train from Hiroshima to Mukainada Station (5 mins), then 5-min walk</div>
     <div class="comment">Arrive at the Mazda Head Office lobby 15 minutes before departure time.</div>
     <div class="btn-row">
-      <button class="btn" onclick="handleExternal('https://www.japan-guide.com/e/e3405.html')">Official Site</button>
-      <button class="btn" onclick="handleExternal('https://www.mazda.com/en/about/museum/reservations/')">Reservations</button>
+      <a class="btn" href="external.html?url=https://www.japan-guide.com/e/e3405.html">Official Site</a>
+      <a class="btn" href="external.html?url=https://www.mazda.com/en/about/museum/reservations/">Reservations</a>
     </div>
   </div>
 
@@ -196,8 +200,8 @@
     <div class="meta"><span>How to get there:</span>15-min walk from Hiroshima Station or tram line 9</div>
     <div class="comment">Admission ends 30 minutes before closing.</div>
     <div class="btn-row">
-      <button class="btn" onclick="handleExternal('https://www.japan-guide.com/e/e3403.html')">Official Site</button>
-      <button class="btn" onclick="handleExternal('https://shukkeien.jp/guide/#entrance')">Tickets / Info</button>
+      <a class="btn" href="external.html?url=https://www.japan-guide.com/e/e3403.html">Official Site</a>
+      <a class="btn" href="external.html?url=https://shukkeien.jp/guide/#entrance">Tickets / Info</a>
     </div>
   </div>
 
@@ -209,8 +213,8 @@
     <div class="meta"><span>How to get there:</span>10-min walk from Kamiyacho-nishi tram stops</div>
     <div class="comment">Admission ends 30 minutes before closing.</div>
     <div class="btn-row">
-      <button class="btn" onclick="handleExternal('https://www.japan-guide.com/e/e3402.html')">Official Site</button>
-      <button class="btn" onclick="handleExternal('https://www.klook.com/en-AU/activity/151455-hiroshima-castle/')">Tickets / Info</button>
+      <a class="btn" href="external.html?url=https://www.japan-guide.com/e/e3402.html">Official Site</a>
+      <a class="btn" href="external.html?url=https://www.klook.com/en-AU/activity/151455-hiroshima-castle/">Tickets / Info</a>
     </div>
   </div>
 
@@ -224,6 +228,7 @@
     <div class="meta"><span>How to get there:</span>JR Nara Line to Inari</div>
     <div class="comment">Best visited early morning.</div>
     <div class="btn-row">
+      <!-- GATED EXTERNAL LINK -->
       <button class="btn" onclick="handleExternal('https://inari.jp/en/')">Official Site</button>
     </div>
   </div>
@@ -237,7 +242,7 @@
     <div class="meta"><span>How to get there:</span>Short walk from Asakusa Station</div>
     <div class="comment">Best visited early morning to avoid crowds.</div>
     <div class="btn-row">
-      <button class="btn" onclick="handleExternal('https://www.japan-guide.com/e/e3001.html')">Official Site</button>
+      <a class="btn" href="external.html?url=https://www.japan-guide.com/e/e3001.html">Official Site</a>
     </div>
   </div>
 
@@ -249,7 +254,9 @@
     <div class="meta"><span>How to get there:</span>Near central Tokyo areas</div>
     <div class="comment">Some areas open on limited dates.</div>
     <div class="btn-row">
+      <!-- GATED EXTERNAL LINK -->
       <button class="btn" onclick="handleExternal('https://www.japan-guide.com/e/e3017.html')">Official Site</button>
+      <!-- GATED EXTERNAL LINK (PHASE 2.5 ALIGNMENT) -->
       <button class="btn" onclick="handleExternal('https://sankan.kunaicho.go.jp/english/about/koukyo.html')">Visit Info</button>
     </div>
   </div>
@@ -262,7 +269,7 @@
     <div class="meta"><span>How to get there:</span>Shin-Toyosu Station</div>
     <div class="comment">Immersive digital art experience.</div>
     <div class="btn-row">
-      <button class="btn" onclick="handleExternal('https://planets.teamlab.art/tokyo/')">Official Site</button>
+      <a class="btn" href="external.html?url=https://planets.teamlab.art/tokyo/">Official Site</a>
     </div>
   </div>
 
@@ -273,13 +280,14 @@
     <div class="meta"><span>Best time:</span>Book early</div>
     <div class="comment">Highly recommended for fans.</div>
     <div class="btn-row">
-      <button class="btn" onclick="handleExternal('https://www.ghibli-museum.jp/en/')">Official Site</button>
-      <button class="btn" onclick="handleExternal('https://www.ghibli-museum.jp/en/ticket-information/')">Tickets</button>
+      <a class="btn" href="external.html?url=https://www.ghibli-museum.jp/en/">Official Site</a>
+      <a class="btn" href="external.html?url=https://www.ghibli-museum.jp/en/ticket-information/">Tickets</a>
     </div>
   </div>
 
 </div>
 
+<!-- ===== OFFLINE OVERLAY MARKUP ===== -->
 <div class="offline-overlay" id="offlineOverlay">
   <div class="offline-box">
     <h2>You’re offline</h2>
@@ -292,12 +300,16 @@
 </div>
 
 <script>
+/* ===== BEGIN OFFLINE GATE LOGIC ===== */
+
 function handleExternal(url) {
   verifyConnectivity()
     .then(function () {
       window.location.href = 'external.html?url=' + encodeURIComponent(url);
     })
-    .catch(showOffline);
+    .catch(function () {
+      showOffline();
+    });
 }
 
 function verifyConnectivity() {
@@ -313,14 +325,14 @@ function verifyConnectivity() {
       cache: 'no-store',
       signal: controller.signal
     })
-      .then(function () {
-        clearTimeout(timeout);
-        resolve();
-      })
-      .catch(function () {
-        clearTimeout(timeout);
-        reject();
-      });
+    .then(function () {
+      clearTimeout(timeout);
+      resolve();
+    })
+    .catch(function () {
+      clearTimeout(timeout);
+      reject();
+    });
   });
 }
 
@@ -331,6 +343,8 @@ function showOffline() {
 function closeOffline() {
   document.getElementById('offlineOverlay').style.display = 'none';
 }
+
+/* ===== END OFFLINE GATE LOGIC ===== */
 </script>
 
 </body>
