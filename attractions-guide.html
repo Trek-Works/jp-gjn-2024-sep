@@ -297,12 +297,6 @@
     externalNavigationPermitted = false;
   }
 
-  function evaluateConnectivityGate() {
-    if (navigator.onLine !== true) return false;
-    if (document.visibilityState !== "visible") return false;
-    return externalNavigationPermitted === true;
-  }
-
   function showOfflineMessage() {
     const box = document.getElementById("offline-external-message");
     if (box) box.style.display = "flex";
@@ -311,6 +305,23 @@
   function hideOfflineMessage() {
     const box = document.getElementById("offline-external-message");
     if (box) box.style.display = "none";
+  }
+
+  async function confirmOnlineConfidence() {
+    try {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), 1500);
+
+      await fetch("/", {
+        method: "HEAD",
+        cache: "no-store",
+        signal: controller.signal
+      });
+
+      externalNavigationPermitted = true;
+    } catch (e) {
+      externalNavigationPermitted = false;
+    }
   }
 
   window.addEventListener("offline", resetConnectivityLatch);
@@ -322,12 +333,12 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     const closeBtn = document.getElementById("offline-message-close");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", hideOfflineMessage);
-    }
+    if (closeBtn) closeBtn.addEventListener("click", hideOfflineMessage);
+
+    resetConnectivityLatch();
 
     if (navigator.onLine === true && document.visibilityState === "visible") {
-      externalNavigationPermitted = true;
+      confirmOnlineConfidence();
     }
   });
 
@@ -340,7 +351,7 @@
     const targetUrl = link.getAttribute("data-external-url");
     if (!targetUrl) return;
 
-    if (!evaluateConnectivityGate()) {
+    if (externalNavigationPermitted !== true) {
       showOfflineMessage();
       return;
     }
